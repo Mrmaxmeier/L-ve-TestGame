@@ -1,4 +1,6 @@
 function love.load()
+	lg = love.graphics
+	player = lg.newImage("gfx/LoveICNS.png")
 	n = 0
 end
 
