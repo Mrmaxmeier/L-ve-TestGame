@@ -1,11 +1,14 @@
+SIZEX = 800
+SIZEY = 600
+
 function love.conf(t)
     t.title = "TestLöveGame"		-- Der Titel des Fensters in dem das Spiel läuft (string)
     t.author = "Mah"		-- Der Spielautor (string)
     t.identity = test		-- Der Name des Spielverzeichnisses (string)
     t.version = 0              -- Die LÖVE-Version, mit welcher das Spiel programmiert wurde (number)
     t.console = true           -- Startet mit dem Spiel auch eine Konsole (boolean, nur unter Windows)
-    t.screen.width = 800        -- Die Fensterbreite (number)
-    t.screen.height = 600       -- Die Fensterhöhe (number)
+    t.screen.width = SIZEX        -- Die Fensterbreite (number)
+    t.screen.height = SIZEY       -- Die Fensterhöhe (number)
     t.screen.fullscreen = false -- Schaltet den Vollbildschirm-Modus ein (boolean)
     t.screen.vsync = true       -- Schaltet Vsync an (boolean)
     t.screen.fsaa = 0           -- Die Anzahl der FSAA-buffer (number)
