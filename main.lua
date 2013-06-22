@@ -1,6 +1,8 @@
 function love.load()
 	lg = love.graphics
-	player = lg.newImage("gfx/LoveICNS.png")
+	hamster = lg.newImage("gfx/hamsterBall.png")
+	hamsterwidth = hamster:getWidth()
+	hamsterheight = hamster:getHeight()
 	n = 0
 	
 	require "cloud"
@@ -17,6 +19,9 @@ function love.update(dt)
 		cloud:update(dt)
 	end
 end
+
+
+
 
 function love.draw()
 	--love.graphics.print('Hello World!', 400, 300)
@@ -36,4 +41,6 @@ function love.draw()
 	for i, cloud in ipairs(clouds) do
 		cloud:draw()
 	end
+
+	lg.draw(hamster, 400, 300, math.rad(90), 1, 1, hamsterwidth / 2, hamsterheight / 2)
 end
