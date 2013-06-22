@@ -1,6 +1,6 @@
 function love.load()
 	lg = love.graphics
-	hamster = lg.newImage("gfx/hamsterBall.png")
+	hamster = lg.newImage("gfx/HamsterBall.png")
 	hamsterwidth = hamster:getWidth()
 	hamsterheight = hamster:getHeight()
 	n = 0
@@ -24,6 +24,14 @@ end
 
 
 function love.draw()
+	wobbling = 0.15 * math.sin(n/50)^2
+	
+	love.graphics.push()
+	love.graphics.translate(SIZEX/2,SIZEY/2)
+	love.graphics.rotate((math.random()-0.5)*wobbling)
+	love.graphics.scale((math.random()-0.5)*wobbling+1)
+	love.graphics.translate(-SIZEX/2,-SIZEY/2)
+	
 	--love.graphics.print('Hello World!', 400, 300)
 	--love.graphics.setBackgroundColor(math.random(128), math.random(128), math.random(128))
 	love.graphics.setColor(math.random(255), math.random(255), math.random(255), 255)
@@ -41,6 +49,8 @@ function love.draw()
 	for i, cloud in ipairs(clouds) do
 		cloud:draw()
 	end
-
+	
 	lg.draw(hamster, 400, 300, math.rad(90), 1, 1, hamsterwidth / 2, hamsterheight / 2)
+	
+	love.graphics.pop()
 end
