@@ -12,6 +12,7 @@ function love.load()
 	
 	require "cloud"
 	require "floortile"
+	require "bullet"
 	
 	clouds = {}
 	for i = 1, 100 do
@@ -21,6 +22,7 @@ function love.load()
 	for i = 1, 100 do
 		table.insert(floortiles, floortile:new())
 	end
+	bullets = {}
 end
 
 function love.update(dt)
@@ -33,12 +35,18 @@ function love.update(dt)
 	for i, floortile in ipairs(floortiles) do
 		floortile:update(dt)
 	end
+	for i, bullet in ipairs(bullets) do
+		bullet:update(dt)
+	end
 	if love.keyboard.isDown("left") then hamsterX = hamsterX - hamsterSpeed*dt end
 	if love.keyboard.isDown("right") then hamsterX = hamsterX + hamsterSpeed*dt end
 	if love.keyboard.isDown("up") then hamsterY = hamsterY - hamsterSpeed*dt end
 	if love.keyboard.isDown("down") then hamsterY = hamsterY + hamsterSpeed*dt end
 end
 
+function love.mousepressed(x, y, bu)
+	table.insert(bullets, bullet:new(x-hamsterX, y-hamsterY))
+end
 
 
 
@@ -76,8 +84,25 @@ function love.draw()
 		cloud:draw()
 	end
 	
+	
+	for i, bullet in ipairs(bullets) do
+		bullet:draw()
+	end
+	
 	love.graphics.setColor(255, 255, 255, 255)
 	lg.draw(hamster, hamsterX, hamsterY, math.rad(rot), 1, 1, hamsterwidth / 2, hamsterheight / 2)
 	
 	love.graphics.pop()
+end
+
+function getRainbowCol()
+	r = 0
+	g = 255
+	b = math.random(255)
+	choices = {{r,g,b}, {b,r,g}, {g,b,r}, {r,b,g}, {b,g,r}, {g,r,b}}
+	return choices[math.random(6)]
+end
+function setRainbowCol()
+	col = getRainbowCol()
+	love.graphics.setColor(col[1], col[2], col[3])
 end
