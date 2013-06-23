@@ -10,14 +10,14 @@ function floortile:init()
 	end
 	self.dz = 2
 	self.y = math.random(5, 50)
-	self.dx = 100
-	self.x = math.random(-SIZEX, SIZEX)
+	self.dx = 10
+	self.rot = math.random(360)
 	self.speed = 1.5^math.random(1, 5)
 end
 
 function floortile:update(dt)
 	self.z = self.z * self.speed^dt
-	if self.x > SIZEX or self.x < -SIZEX or self.y * self.z > SIZEY/2 then
+	if self.y * self.z > SIZEY/2 then
 		self:init()
 	end
 end
@@ -25,9 +25,12 @@ end
 function floortile:draw()
 	love.graphics.setColor(self.color[1], self.color[2], self.color[3], 125)
 	z1, z2 = self.z, self.z*self.dz
-	x1, y = self.x, self.y
-	x2 = x1+self.dx
+	x1, y = -self.dx/2, self.y
+	x2 = self.dx/2
+	love.graphics.push()
 	love.graphics.translate(SIZEX/2, SIZEY/2)
+	love.graphics.rotate(math.rad(self.rot))
 	love.graphics.polygon("fill", x1*z1, y*z1, x2*z1, y*z1, x2*z2, y*z2, x1*z2, y*z2)
 	love.graphics.translate(-SIZEX/2, -SIZEY/2)
+	love.graphics.pop()
 end
