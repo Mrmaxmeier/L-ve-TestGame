@@ -3,6 +3,9 @@ function love.load()
 	hamster = lg.newImage("gfx/HamsterBall.png")
 	hamsterwidth = hamster:getWidth()
 	hamsterheight = hamster:getHeight()
+	hamsterSpeed = 400
+	hamsterX = SIZEX/2
+	hamsterY = SIZEY/2
 	n = 0
 	rot = 0
 	rspeed = 10
@@ -30,7 +33,13 @@ function love.update(dt)
 	for i, floortile in ipairs(floortiles) do
 		floortile:update(dt)
 	end
+	if love.keyboard.isDown("left") then hamsterX = hamsterX - hamsterSpeed*dt end
+	if love.keyboard.isDown("right") then hamsterX = hamsterX + hamsterSpeed*dt end
+	if love.keyboard.isDown("up") then hamsterY = hamsterY - hamsterSpeed*dt end
+	if love.keyboard.isDown("down") then hamsterY = hamsterY + hamsterSpeed*dt end
 end
+
+
 
 
 
@@ -50,8 +59,10 @@ function love.draw()
 	--love.graphics.print('Hello World!', 400, 300)
 	--love.graphics.setBackgroundColor(math.random(128), math.random(128), math.random(128))
 	love.graphics.setColor(math.random(255), math.random(255), math.random(255), 255)
-	x = SIZEX/2
-	y = SIZEY/2
+	--x = SIZEX/2
+	--y = SIZEY/2
+	x = hamsterX
+	y = hamsterY
 	for i = 1, 14, 2 do
 		local alpha = math.rad(i / 14 * 360 + rot)
 		local point1 = {x+2000*math.cos(alpha), y+2000*math.sin(alpha)}
@@ -66,7 +77,7 @@ function love.draw()
 	end
 	
 	love.graphics.setColor(255, 255, 255, 255)
-	lg.draw(hamster, 400, 300, math.rad(90), 1, 1, hamsterwidth / 2, hamsterheight / 2)
+	lg.draw(hamster, hamsterX, hamsterY, math.rad(rot), 1, 1, hamsterwidth / 2, hamsterheight / 2)
 	
 	love.graphics.pop()
 end
