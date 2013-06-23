@@ -20,7 +20,7 @@ end
 function love.update(dt)
 	n = n + dt*60
 	rot = rot + rspeed * dt
-	rspeed = 0.99 * (rspeed + 200*(math.random() - 0.5))
+	rspeed = 0.99 * (rspeed + 4000*dt*(math.random() - 0.5))
 	for i, cloud in ipairs(clouds) do
 		cloud:update(dt)
 	end
@@ -55,8 +55,8 @@ function love.draw()
 	for i, cloud in ipairs(clouds) do
 		cloud:draw()
 	end
-	
-	lg.draw(hamster, 400, 300, math.rad(90), 1, 1, hamsterwidth / 2, hamsterheight / 2)
+	lg.setColor(255,255,255,255)
+	lg.draw(hamster, 400, 300, math.rad(rot), 1, 1, hamsterwidth / 2, hamsterheight / 2)
 	
 	love.graphics.pop()
 end
