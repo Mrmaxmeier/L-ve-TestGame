@@ -3,7 +3,7 @@ bullet = class:new()
 function bullet:init(dx, dy)
 	self.dx, self.dy = dx, dy
 	self.r = 15
-	self.x, self.y = hamsterX, hamsterY
+	self.x, self.y = player.x, player.y
 end
 
 function bullet:update(dt)
