@@ -14,7 +14,7 @@ function love.load()
 	require "cloud"
 	require "floortile"
 	require "bullet"
-	
+	require "enemy"
 	
 	player = playerInit()
 	
@@ -25,6 +25,10 @@ function love.load()
 	floortiles = {}
 	for i = 1, 100 do
 		table.insert(floortiles, floortile:new())
+	end
+	enemies = {}
+	for i = 1, 100 do
+		table.insert(enemies, enemy:new(math.random(SIZEX), math.random(SIZEY)))
 	end
 	bullets = {}
 end
@@ -42,12 +46,22 @@ function love.update(dt)
 	for i, bullet in ipairs(bullets) do
 		bullet:update(dt)
 	end
-	
-	--PlayerMovement
-	if love.keyboard.isDown("left") then player.x = player.x - player.speed*dt end
-	if love.keyboard.isDown("right") then player.x = player.x + player.speed*dt end
+	for i, enemy in ipairs(enemies) do
+		enemy:update(dt)
+	end
+	for ib, bullet in ipairs(bullets) do
+		for ie, enemy in ipairs(enemies) do
+			if collides(bullet, enemy) then
+				table.remove(bullets, ib)
+				table.remove(enemies, ie)
+				print("COLLISION")
+			end
+		end
+	end
 	if love.keyboard.isDown("up") then player.y = player.y - player.speed*dt end
 	if love.keyboard.isDown("down") then player.y = player.y + player.speed*dt end
+	if love.keyboard.isDown("left") then player.x = player.x - player.speed*dt end
+	if love.keyboard.isDown("right") then player.x = player.x + player.speed*dt end
 	
 	
 	if love.keyboard.isDown("e") then worldRot = worldRot + 10*dt end
@@ -98,6 +112,9 @@ function love.draw()
 	for i, bullet in ipairs(bullets) do
 		bullet:draw()
 	end
+	for i, enemy in ipairs(enemies) do
+		enemy:draw()
+	end
 	
 	love.graphics.setColor(255, 255, 255, 255)
 	lg.draw(hamster, player.x, player.y, math.rad(rot), 1, 1, hamster:getWidth() / 2, hamster:getHeight() / 2)
@@ -109,16 +126,4 @@ function love.draw()
 	lg.line(100,100,100+100*math.sin(math.rad(worldRot)),100+100*math.cos(math.rad(worldRot)))
 	--
 	love.graphics.pop()
-end
-
-function getRainbowCol()
-	r = 0
-	g = 255
-	b = math.random(255)
-	choices = {{r,g,b}, {b,r,g}, {g,b,r}, {r,b,g}, {b,g,r}, {g,r,b}}
-	return choices[math.random(6)]
-end
-function setRainbowCol()
-	col = getRainbowCol()
-	love.graphics.setColor(col[1], col[2], col[3])
 end
