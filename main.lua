@@ -10,9 +10,11 @@ function love.load()
 	rot = 0
 	rspeed = 10
 	
+	require "util"
 	require "cloud"
 	require "floortile"
 	require "bullet"
+	require "enemy"
 	
 	clouds = {}
 	for i = 1, 100 do
@@ -21,6 +23,10 @@ function love.load()
 	floortiles = {}
 	for i = 1, 100 do
 		table.insert(floortiles, floortile:new())
+	end
+	enemies = {}
+	for i = 1, 100 do
+		table.insert(enemies, enemy:new(math.random(SIZEX), math.random(SIZEY)))
 	end
 	bullets = {}
 end
@@ -37,6 +43,18 @@ function love.update(dt)
 	end
 	for i, bullet in ipairs(bullets) do
 		bullet:update(dt)
+	end
+	for i, enemy in ipairs(enemies) do
+		enemy:update(dt)
+	end
+	for ib, bullet in ipairs(bullets) do
+		for ie, enemy in ipairs(enemies) do
+			if collides(bullet, enemy) then
+				table.remove(bullets, ib)
+				table.remove(enemies, ie)
+				print("COLLISION")
+			end
+		end
 	end
 	if love.keyboard.isDown("left") then hamsterX = hamsterX - hamsterSpeed*dt end
 	if love.keyboard.isDown("right") then hamsterX = hamsterX + hamsterSpeed*dt end
@@ -88,21 +106,12 @@ function love.draw()
 	for i, bullet in ipairs(bullets) do
 		bullet:draw()
 	end
+	for i, enemy in ipairs(enemies) do
+		enemy:draw()
+	end
 	
 	love.graphics.setColor(255, 255, 255, 255)
 	lg.draw(hamster, hamsterX, hamsterY, math.rad(rot), 1, 1, hamsterwidth / 2, hamsterheight / 2)
 	
 	love.graphics.pop()
-end
-
-function getRainbowCol()
-	r = 0
-	g = 255
-	b = math.random(255)
-	choices = {{r,g,b}, {b,r,g}, {g,b,r}, {r,b,g}, {b,g,r}, {g,r,b}}
-	return choices[math.random(6)]
-end
-function setRainbowCol()
-	col = getRainbowCol()
-	love.graphics.setColor(col[1], col[2], col[3])
 end
