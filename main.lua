@@ -6,6 +6,9 @@ function love.load()
 	hamsterSpeed = 400
 	hamsterX = SIZEX/2
 	hamsterY = SIZEY/2
+	highlightX = SIZEX/2
+	highlightY = SIZEY/2
+	highlightT = 0
 	n = 0
 	rot = 0
 	rspeed = 10
@@ -32,6 +35,7 @@ function love.load()
 end
 
 function love.update(dt)
+	highlightT = highlightT + dt*0.5
 	n = n + dt*60
 	rot = rot + rspeed * dt
 	rspeed = 0.99 * (rspeed + 4000*dt*(math.random() - 0.5))
@@ -50,6 +54,9 @@ function love.update(dt)
 	for ib, bullet in ipairs(bullets) do
 		for ie, enemy in ipairs(enemies) do
 			if collides(bullet, enemy) then
+				highlightX = enemy.x
+				highlightY = enemy.y
+				highlightT = 0
 				table.remove(bullets, ib)
 				table.remove(enemies, ie)
 				print("COLLISION")
@@ -71,24 +78,24 @@ end
 
 
 function love.draw()
-	wobbling = 0.15 * math.sin(n/50)^2
+	wobbling = 0.25 / (1+highlightT)
 	
 	love.graphics.push()
-	love.graphics.translate(SIZEX/2,SIZEY/2)
+	love.graphics.translate(highlightX, highlightY)
 	--love.graphics.rotate((math.random()-0.5)*wobbling)
 	love.graphics.scale((math.random()-0.5)*wobbling+1)
-	love.graphics.translate(-SIZEX/2,-SIZEY/2)
+	love.graphics.translate(-highlightX,-highlightY)
 	
 	for i, floortile in ipairs(floortiles) do
 		floortile:draw()
 	end
 	--love.graphics.print('Hello World!', 400, 300)
 	--love.graphics.setBackgroundColor(math.random(128), math.random(128), math.random(128))
-	love.graphics.setColor(math.random(255), math.random(255), math.random(255), 255)
+	love.graphics.setColor(math.random(255), math.random(255), math.random(255), 255*math.max(0, 1-highlightT))
 	--x = SIZEX/2
 	--y = SIZEY/2
-	x = hamsterX
-	y = hamsterY
+	x = highlightX
+	y = highlightY
 	for i = 1, 14, 2 do
 		local alpha = math.rad(i / 14 * 360 + rot)
 		local point1 = {x+2000*math.cos(alpha), y+2000*math.sin(alpha)}
