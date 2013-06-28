@@ -24,6 +24,7 @@ function love.load()
 	require "bullet"
 	require "enemy"
 	require "util"
+	require "powerup"
 	
 	player = playerInit()
 	
@@ -37,6 +38,7 @@ function love.load()
 	end
 	enemies = {}
 	bullets = {}
+	powerups = {}
 	
 	love.graphics.setLineWidth(4)
 end
@@ -58,8 +60,14 @@ function love.update(dt)
 	for i, enemy in ipairs(enemies) do
 		enemy:update(dt)
 	end
+	
+	for i, powerup in ipairs(powerups) do
+		powerup:update(dt)
+	end
+	
 	if math.random() < dt*2 then
 		table.insert(enemies, enemy:new(math.random(-SIZEX, 2*SIZEX), math.random(-SIZEY, 2*SIZEY)))
+		table.insert(powerups, powerup:new(math.random(-SIZEX, 2*SIZEX), math.random(-SIZEY, 2*SIZEY)))
 	end
 	for ib, bullet in ipairs(bullets) do
 		for ie, enemy in ipairs(enemies) do
@@ -129,6 +137,10 @@ function love.draw()
 	end
 	for i, enemy in ipairs(enemies) do
 		enemy:draw()
+	end
+
+	for i, powerup in ipairs(powerups) do
+		powerup:draw()
 	end
 	
 	love.graphics.setColor(255, 255, 255, 255)
