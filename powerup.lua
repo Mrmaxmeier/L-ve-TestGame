@@ -6,7 +6,7 @@ function powerup:init(x, y)
 	self.acc = 100
 	self.col = getRainbowCol()
 	self.x, self.y = x, y
-	self.powerUpType = "tripleshot"
+	self.powerUpType = "multishot"
 end
 
 function powerup:update(dt)

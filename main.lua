@@ -92,7 +92,15 @@ function love.update(dt)
 end
 
 function love.mousepressed(x, y, bu)
-	table.insert(bullets, bullet:new((x-player.x)*5, (y-player.y)*5))
+	if player.activePowerUp == "multishot" then
+		table.insert(bullets, bullet:new((x-player.x)*5, (y-player.y)*5 - 90))
+		table.insert(bullets, bullet:new((x-player.x)*5 + 90, (y-player.y)*5))
+		table.insert(bullets, bullet:new((x-player.x)*5 - 90, (y-player.y)*5))
+		table.insert(bullets, bullet:new((x-player.x)*5, (y-player.y)*5 + 90))
+	else
+		table.insert(bullets, bullet:new((x-player.x)*5, (y-player.y)*5))
+	end
+
 end
 
 
