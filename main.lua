@@ -36,10 +36,9 @@ function love.load()
 		table.insert(floortiles, floortile:new())
 	end
 	enemies = {}
-	for i = 1, 100 do
-		table.insert(enemies, enemy:new(math.random(SIZEX), math.random(SIZEY)))
-	end
 	bullets = {}
+	
+	love.graphics.setLineWidth(4)
 end
 
 function love.update(dt)
@@ -58,6 +57,9 @@ function love.update(dt)
 	end
 	for i, enemy in ipairs(enemies) do
 		enemy:update(dt)
+	end
+	if math.random() < dt*2 then
+		table.insert(enemies, enemy:new(math.random(-SIZEX, 2*SIZEX), math.random(-SIZEY, 2*SIZEY)))
 	end
 	for ib, bullet in ipairs(bullets) do
 		for ie, enemy in ipairs(enemies) do
@@ -82,7 +84,7 @@ function love.update(dt)
 end
 
 function love.mousepressed(x, y, bu)
-	table.insert(bullets, bullet:new(x-player.x, y-player.y))
+	table.insert(bullets, bullet:new((x-player.x)*5, (y-player.y)*5))
 end
 
 

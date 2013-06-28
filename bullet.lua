@@ -9,7 +9,7 @@ end
 function bullet:update(dt)
 	self.x = self.x + self.dx*dt
 	self.y = self.y + self.dy*dt
-	if self.x^2 + self.y^2 > 2*SIZEX^2 then
+	if self.x < 0 or self.y < 0 or self.x > SIZEX or self.y > SIZEY then
 		for i, bu in ipairs(bullets) do
 			if bu == self then
 				table.remove(bullets, i)
