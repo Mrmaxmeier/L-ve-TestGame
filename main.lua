@@ -26,7 +26,7 @@ function love.load()
 	require "util"
 	require "powerup"
 	
-	player = playerInit()
+	player = player:new()
 	
 	clouds = {}
 	for i = 1, 100 do
@@ -69,6 +69,12 @@ function love.update(dt)
 		table.insert(enemies, enemy:new(math.random(-SIZEX, 2*SIZEX), math.random(-SIZEY, 2*SIZEY)))
 		table.insert(powerups, powerup:new(math.random(-SIZEX, 2*SIZEX), math.random(-SIZEY, 2*SIZEY)))
 	end
+	for i, enemy in ipairs(enemies) do
+		if collides(player, enemy) then
+			print "TOOOOOD!!!"
+			table.remove(enemies, i)
+		end
+	end
 	for ib, bullet in ipairs(bullets) do
 		for ie, enemy in ipairs(enemies) do
 			if collides(bullet, enemy) then
@@ -81,11 +87,7 @@ function love.update(dt)
 			end
 		end
 	end
-	if love.keyboard.isDown("up") then player.y = player.y - player.speed*dt end
-	if love.keyboard.isDown("down") then player.y = player.y + player.speed*dt end
-	if love.keyboard.isDown("left") then player.x = player.x - player.speed*dt end
-	if love.keyboard.isDown("right") then player.x = player.x + player.speed*dt end
-	
+	player:update(dt)
 	
 	if love.keyboard.isDown("e") then worldRot = worldRot + 10*dt end
 	if love.keyboard.isDown("q") then worldRot = worldRot - 10*dt end
@@ -146,13 +148,11 @@ function love.draw()
 	for i, enemy in ipairs(enemies) do
 		enemy:draw()
 	end
-
+	player:draw()
+	
 	for i, powerup in ipairs(powerups) do
 		powerup:draw()
 	end
-	
-	love.graphics.setColor(255, 255, 255, 255)
-	lg.draw(hamster, player.x, player.y, math.rad(rot), 1, 1, hamster:getWidth() / 2, hamster:getHeight() / 2)
 	
 	--Minimap
 	love.graphics.setColor(100, 150, 255, 200)
