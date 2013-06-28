@@ -1,4 +1,5 @@
 function love.load()
+	--Vars
 	lg = love.graphics
 	hamster = lg.newImage("gfx/HamsterBall.png")
 	hamsterwidth = hamster:getWidth()
@@ -9,15 +10,22 @@ function love.load()
 	highlightX = SIZEX/2
 	highlightY = SIZEY/2
 	highlightT = 0
+	
 	n = 0
 	rot = 0
 	rspeed = 10
 	
-	require "util"
+	worldRot = 0
+	
+	--Requires
+	require "player"
 	require "cloud"
 	require "floortile"
 	require "bullet"
 	require "enemy"
+	require "util"
+	
+	player = playerInit()
 	
 	clouds = {}
 	for i = 1, 100 do
@@ -63,14 +71,18 @@ function love.update(dt)
 			end
 		end
 	end
-	if love.keyboard.isDown("left") then hamsterX = hamsterX - hamsterSpeed*dt end
-	if love.keyboard.isDown("right") then hamsterX = hamsterX + hamsterSpeed*dt end
-	if love.keyboard.isDown("up") then hamsterY = hamsterY - hamsterSpeed*dt end
-	if love.keyboard.isDown("down") then hamsterY = hamsterY + hamsterSpeed*dt end
+	if love.keyboard.isDown("up") then player.y = player.y - player.speed*dt end
+	if love.keyboard.isDown("down") then player.y = player.y + player.speed*dt end
+	if love.keyboard.isDown("left") then player.x = player.x - player.speed*dt end
+	if love.keyboard.isDown("right") then player.x = player.x + player.speed*dt end
+	
+	
+	if love.keyboard.isDown("e") then worldRot = worldRot + 10*dt end
+	if love.keyboard.isDown("q") then worldRot = worldRot - 10*dt end
 end
 
 function love.mousepressed(x, y, bu)
-	table.insert(bullets, bullet:new(x-hamsterX, y-hamsterY))
+	table.insert(bullets, bullet:new(x-player.x, y-player.y))
 end
 
 
@@ -118,7 +130,13 @@ function love.draw()
 	end
 	
 	love.graphics.setColor(255, 255, 255, 255)
-	lg.draw(hamster, hamsterX, hamsterY, math.rad(rot), 1, 1, hamsterwidth / 2, hamsterheight / 2)
+	lg.draw(hamster, player.x, player.y, math.rad(rot), 1, 1, hamster:getWidth() / 2, hamster:getHeight() / 2)
 	
+	--Minimap
+	love.graphics.setColor(100, 150, 255, 200)
+	love.graphics.circle( "fill", 100, 100, 100, 180 )
+	love.graphics.setColor(255, 150, 255, 240)
+	lg.line(100,100,100+100*math.sin(math.rad(worldRot)),100+100*math.cos(math.rad(worldRot)))
+	--
 	love.graphics.pop()
 end

@@ -9,9 +9,9 @@ function enemy:init(x, y)
 end
 
 function enemy:update(dt)
-	dist = (hamsterX-self.x)^2 + (hamsterY-self.y)^2
-	self.dx = self.dx*0.99^dt + (hamsterX-self.x)*self.acc/dist
-	self.dy = self.dy*0.99^dt + (hamsterY-self.y)*self.acc/dist
+	dist = (player.x-self.x)^2 + (player.y-self.y)^2
+	self.dx = self.dx*0.99^dt + (player.x-self.x)*self.acc/dist
+	self.dy = self.dy*0.99^dt + (player.y-self.y)*self.acc/dist
 	self.x = self.x + self.dx*dt
 	self.y = self.y + self.dy*dt
 	if self.x^2 + self.y^2 > SIZEX^2 then
