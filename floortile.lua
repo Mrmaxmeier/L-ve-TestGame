@@ -28,9 +28,9 @@ function floortile:draw()
 	x1, y = -self.dx/2, self.y
 	x2 = self.dx/2
 	love.graphics.push()
-	love.graphics.translate(SIZEX/2, SIZEY/2)
+	love.graphics.translate(highlightX, highlightY)
 	love.graphics.rotate(math.rad(self.rot))
 	love.graphics.polygon("fill", x1*z1, y*z1, x2*z1, y*z1, x2*z2, y*z2, x1*z2, y*z2)
-	love.graphics.translate(-SIZEX/2, -SIZEY/2)
+	--love.graphics.translate(-highlightX, -highlightY)
 	love.graphics.pop()
 end

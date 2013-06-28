@@ -18,7 +18,7 @@ end
 function cloud:draw()
 	love.graphics.setColor(255, 255, 255, 125)
 	love.graphics.push()
-	love.graphics.translate(SIZEX/2, SIZEY/2)
+	love.graphics.translate(highlightX, highlightY)
 	love.graphics.rotate(math.rad(self.rot))
 	x, y = -self.dx/2, self.y
 	x2, y2 = self.dx/2, y+self.dy
