@@ -75,6 +75,13 @@ function love.update(dt)
 			table.remove(enemies, i)
 		end
 	end
+	for i, powerup in ipairs(powerups) do
+		if collides(player, powerup) then
+			print "POOOWERRRUUPPP!!!"
+			player.activePowerUp = powerup.powerUpType
+			table.remove(powerups, i)
+		end
+	end
 	for ib, bullet in ipairs(bullets) do
 		for ie, enemy in ipairs(enemies) do
 			if collides(bullet, enemy) then
