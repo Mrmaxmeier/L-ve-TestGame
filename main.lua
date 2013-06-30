@@ -25,6 +25,7 @@ function love.load()
 	require "enemy"
 	require "util"
 	require "powerup"
+	require "explosion"
 	
 	player = player:new()
 	
@@ -39,6 +40,7 @@ function love.load()
 	enemies = {}
 	bullets = {}
 	powerups = {}
+	explosions = {}
 	
 	love.graphics.setLineWidth(4)
 end
@@ -56,6 +58,9 @@ function love.update(dt)
 	end
 	for i, bullet in ipairs(bullets) do
 		bullet:update(dt)
+	end
+	for i, explosion in ipairs(explosions) do
+		explosion:update(dt)
 	end
 	for i, enemy in ipairs(enemies) do
 		enemy:update(dt)
@@ -91,6 +96,7 @@ function love.update(dt)
 				table.remove(bullets, ib)
 				table.remove(enemies, ie)
 				print("COLLISION")
+				table.insert(explosions, explosion:new(bullet.x, bullet.y, 1))
 			end
 		end
 	end
@@ -154,6 +160,9 @@ function love.draw()
 	end
 	for i, enemy in ipairs(enemies) do
 		enemy:draw()
+	end
+	for i, explosion in ipairs(explosions) do
+		explosion:draw()
 	end
 	player:draw()
 	

@@ -17,3 +17,12 @@ function collides(a, b)
 	r = a.r + b.r
 	return r^2 >= dx^2 + dy^2
 end
+
+function table.remVal(t, val)
+	for i, v in ipairs(t) do
+		if v == val then
+			table.remove(t, i)
+			return
+		end
+	end
+end
