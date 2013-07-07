@@ -171,10 +171,10 @@ function love.draw()
 	end
 	
 	--Minimap
-	love.graphics.setColor(100, 150, 255, 200)
-	love.graphics.circle( "fill", 100, 100, 100, 180 )
-	love.graphics.setColor(255, 150, 255, 240)
-	lg.line(100,100,100+100*math.sin(math.rad(worldRot)),100+100*math.cos(math.rad(worldRot)))
+	--love.graphics.setColor(100, 150, 255, 200)
+	--love.graphics.circle( "fill", 100, 100, 100, 180 )
+	--love.graphics.setColor(255, 150, 255, 240)
+	--lg.line(100,100,100+100*math.sin(math.rad(worldRot)),100+100*math.cos(math.rad(worldRot)))
 	--
 	love.graphics.pop()
 end

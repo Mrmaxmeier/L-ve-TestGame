@@ -1,5 +1,5 @@
-SIZEX = 800
-SIZEY = 600
+SIZEX = 480
+SIZEY = 320
 
 function love.conf(t)
     t.title = "TestLöveGame"		-- Der Titel des Fensters in dem das Spiel läuft (string)
