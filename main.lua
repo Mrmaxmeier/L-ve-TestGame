@@ -4,11 +4,8 @@ function love.load()
 	hamster = lg.newImage("gfx/HamsterBall.png")
 	hamsterwidth = hamster:getWidth()
 	hamsterheight = hamster:getHeight()
-	hamsterSpeed = 400
-	hamsterX = SIZEX/2
-	hamsterY = SIZEY/2
-	highlightX = SIZEX/2
-	highlightY = SIZEY/2
+	highlightX = 0
+	highlightY = 0
 	highlightT = 0
 	
 	n = 0
@@ -19,8 +16,6 @@ function love.load()
 	
 	--Requires
 	require "player"
-	require "cloud"
-	require "floortile"
 	require "bullet"
 	require "enemy"
 	require "util"
@@ -29,14 +24,6 @@ function love.load()
 	
 	player = player:new()
 	
-	clouds = {}
-	for i = 1, 100 do
-		table.insert(clouds, cloud:new())
-	end
-	floortiles = {}
-	for i = 1, 100 do
-		table.insert(floortiles, floortile:new())
-	end
 	enemies = {}
 	bullets = {}
 	powerups = {}
@@ -50,12 +37,6 @@ function love.update(dt)
 	n = n + dt*60
 	rot = rot + rspeed * dt
 	rspeed = 0.99 * (rspeed + 4000*dt*(math.random() - 0.5))
-	for i, cloud in ipairs(clouds) do
-		cloud:update(dt)
-	end
-	for i, floortile in ipairs(floortiles) do
-		floortile:update(dt)
-	end
 	for i, bullet in ipairs(bullets) do
 		bullet:update(dt)
 	end
@@ -71,8 +52,8 @@ function love.update(dt)
 	end
 	
 	if math.random() < dt*2 then
-		table.insert(enemies, enemy:new(math.random(-SIZEX, 2*SIZEX), math.random(-SIZEY, 2*SIZEY)))
-		table.insert(powerups, powerup:new(math.random(-SIZEX, 2*SIZEX), math.random(-SIZEY, 2*SIZEY)))
+		table.insert(enemies,  enemy  :new(math.random(-SIZEX, 2*SIZEX)+player.x, math.random(-SIZEY, 2*SIZEY)+player.y))
+		table.insert(powerups, powerup:new(math.random(-SIZEX, 2*SIZEX)+player.x, math.random(-SIZEY, 2*SIZEY)+player.y))
 	end
 	for i, enemy in ipairs(enemies) do
 		if collides(player, enemy) then
@@ -108,14 +89,15 @@ end
 
 function love.mousepressed(x, y, bu)
 	if player.activePowerUp == "multishot" then
-		table.insert(bullets, bullet:new((x-player.x)*5, (y-player.y)*5 - 90))
-		table.insert(bullets, bullet:new((x-player.x)*5 + 90, (y-player.y)*5))
-		table.insert(bullets, bullet:new((x-player.x)*5 - 90, (y-player.y)*5))
-		table.insert(bullets, bullet:new((x-player.x)*5, (y-player.y)*5 + 90))
+		table.insert(bullets, bullet:new(player.dx + (x-SIZEX/2)*5, player.dy + (y-SIZEY/2)*5 - 90))
+		table.insert(bullets, bullet:new(player.dx + (x-SIZEX/2)*5 + 90, player.dy + (y-SIZEY/2)*5))
+		table.insert(bullets, bullet:new(player.dx + (x-SIZEX/2)*5 - 90, player.dy + (y-SIZEY/2)*5))
+		table.insert(bullets, bullet:new(player.dx + (x-SIZEX/2)*5, player.dy + (y-SIZEY/2)*5 + 90))
 	else
-		table.insert(bullets, bullet:new((x-player.x)*5, (y-player.y)*5))
+		table.insert(bullets, bullet:new(player.dx + (x-SIZEX/2)*5, player.dy + (y-SIZEY/2)*5))
 	end
-
+	player.dx = player.dx + (x-SIZEX/2)*-0.2
+	player.dy = player.dy + (y-SIZEY/2)*-0.2
 end
 
 
@@ -123,17 +105,17 @@ end
 
 
 function love.draw()
-	wobbling = 0.25 / (1+highlightT)
+	wobbling = 0.1 / (1+highlightT)
+	if wobbling < 0.03 then wobbling = 0 end
 	
 	love.graphics.push()
+	love.graphics.translate(SIZEX/2, SIZEY/2)
+	love.graphics.translate(-player.x, -player.y)
 	love.graphics.translate(highlightX, highlightY)
 	--love.graphics.rotate((math.random()-0.5)*wobbling)
 	love.graphics.scale((math.random()-0.5)*wobbling+1)
 	love.graphics.translate(-highlightX,-highlightY)
 	
-	for i, floortile in ipairs(floortiles) do
-		floortile:draw()
-	end
 	--love.graphics.print('Hello World!', 400, 300)
 	--love.graphics.setBackgroundColor(math.random(128), math.random(128), math.random(128))
 	love.graphics.setColor(math.random(255), math.random(255), math.random(255), 255*math.max(0, 1-highlightT))
@@ -149,9 +131,6 @@ function love.draw()
 		local point2 = {x+2000*math.cos(alpha), y+2000*math.sin(alpha)}
 		
 		love.graphics.polygon("fill", x, y, point1[1], point1[2], point2[1], point2[2])
-	end
-	for i, cloud in ipairs(clouds) do
-		cloud:draw()
 	end
 	
 	

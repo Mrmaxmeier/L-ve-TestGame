@@ -3,18 +3,18 @@ require "class"
 player = class:new()
 
 function player:init()
-	self.x = SIZEX/2
-	self.y = SIZEY/2
-	self.speed = 400
+	self.x = 0--SIZEX/2
+	self.y = 0--SIZEY/2
+	self.dx, self.dy = 0, 0
 	self.r = 64
 end
 
 
 function player:update(dt)
-	if love.keyboard.isDown("up") then self.y = self.y - self.speed*dt end
-	if love.keyboard.isDown("down") then self.y = self.y + self.speed*dt end
-	if love.keyboard.isDown("left") then self.x = self.x - self.speed*dt end
-	if love.keyboard.isDown("right") then self.x = self.x + self.speed*dt end
+	self.x = self.x + self.dx*dt
+	self.y = self.y + self.dy*dt
+	self.dx = self.dx * 0.8^dt
+	self.dy = self.dy * 0.8^dt
 end
 
 function player:draw()

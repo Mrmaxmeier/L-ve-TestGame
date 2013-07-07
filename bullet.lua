@@ -9,7 +9,7 @@ end
 function bullet:update(dt)
 	self.x = self.x + self.dx*dt
 	self.y = self.y + self.dy*dt
-	if self.x < 0 or self.y < 0 or self.x > SIZEX or self.y > SIZEY then
+	if (self.x-player.x)^2 + (self.y-player.y)^2 > (SIZEX/2)^2 then
 		table.remVal(bullets, self)
 	end
 end
