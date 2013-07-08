@@ -15,6 +15,7 @@ function love.load()
 	worldRot = 0
 	
 	--Requires
+	require "star"
 	require "player"
 	require "bullet"
 	require "enemy"
@@ -24,6 +25,10 @@ function love.load()
 	
 	player = player:new()
 	
+	stars = {}
+	for i = 1, 100 do
+		table.insert(stars, Star:new())
+	end
 	enemies = {}
 	bullets = {}
 	powerups = {}
@@ -37,6 +42,9 @@ function love.update(dt)
 	n = n + dt*60
 	rot = rot + rspeed * dt
 	rspeed = 0.99 * (rspeed + 4000*dt*(math.random() - 0.5))
+	for i, star in ipairs(stars) do
+		star:update(dt)
+	end
 	for i, bullet in ipairs(bullets) do
 		bullet:update(dt)
 	end
@@ -105,8 +113,8 @@ end
 
 
 function love.draw()
-	wobbling = 0.1 / (1+highlightT)
-	if wobbling < 0.03 then wobbling = 0 end
+	wobbling = 30 / (1+highlightT^2) / (200 + ((player.x - highlightX)^2 + (player.y - highlightY)^2)^0.5)
+	--if wobbling < 0.03 then wobbling = 0 end
 	
 	love.graphics.push()
 	love.graphics.translate(SIZEX/2, SIZEY/2)
@@ -115,6 +123,10 @@ function love.draw()
 	--love.graphics.rotate((math.random()-0.5)*wobbling)
 	love.graphics.scale((math.random()-0.5)*wobbling+1)
 	love.graphics.translate(-highlightX,-highlightY)
+	
+	for i, star in ipairs(stars) do
+		star:draw()
+	end
 	
 	--love.graphics.print('Hello World!', 400, 300)
 	--love.graphics.setBackgroundColor(math.random(128), math.random(128), math.random(128))
