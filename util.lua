@@ -26,3 +26,8 @@ function table.remVal(t, val)
 		end
 	end
 end
+
+
+function GetRandomElement(a)
+	return a[math.random(#a)]
+end

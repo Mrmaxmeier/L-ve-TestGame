@@ -1,19 +1,14 @@
-powerup = class:new()
+bozzenemy = class:new()
 
-function powerup:init(x, y)
+function bozzenemy:init(x, y)
 	self.dx, self.dy = math.random(-100, 100), math.random(-100, 100)
-	self.r = 10
+	self.r = 200
 	self.acc = 100
 	self.col = getRainbowCol()
 	self.x, self.y = x, y
-	self.powerUpTypeList = {
-		"multishot",
-		"multipower"
-	}
-	self.powerUpType = GetRandomElement(self.powerUpTypeList)
 end
 
-function powerup:update(dt)
+function bozzenemy:update(dt)
 	dist = (player.x-self.x)^2 + (player.y-self.y)^2
 	self.dx = self.dx*0.9^dt + (player.x-self.x)*self.acc/dist
 	self.dy = self.dy*0.9^dt + (player.y-self.y)*self.acc/dist
@@ -24,7 +19,7 @@ function powerup:update(dt)
 	end
 end
 
-function powerup:draw()
+function bozzenemy:draw()
 	love.graphics.setColor(self.col[1], self.col[2], self.col[3])
 	love.graphics.circle("fill", self.x, self.y, self.r, self.r)
 	if math.random() < 0.5 then

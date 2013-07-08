@@ -1,6 +1,11 @@
 SIZEX = 480
 SIZEY = 320
 
+--Bigger
+SIZEX = 480*2
+SIZEY = 320*2
+
+
 function love.conf(t)
     t.title = "TestLöveGame"		-- Der Titel des Fensters in dem das Spiel läuft (string)
     t.author = "Mah"		-- Der Spielautor (string)

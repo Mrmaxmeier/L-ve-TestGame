@@ -7,6 +7,8 @@ function player:init()
 	self.y = 0--SIZEY/2
 	self.dx, self.dy = 0, 0
 	self.r = 64
+	
+	self.activePowerUp = "None"
 end
 
 
@@ -20,4 +22,5 @@ end
 function player:draw()
 	love.graphics.setColor(255, 255, 255, 255)
 	lg.draw(hamster, self.x, self.y, math.rad(rot), 1, 1, self.r, self.r)
+
 end
