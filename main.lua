@@ -71,6 +71,7 @@ function love.update(dt)
 		if collides(player, enemy) then
 			print "TOOOOOD!!!"
 			table.remove(enemies, i)
+			player.health = player.health - 5
 		end
 	end
 	for i, powerup in ipairs(powerups) do

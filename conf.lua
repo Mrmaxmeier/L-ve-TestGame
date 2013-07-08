@@ -2,8 +2,8 @@ SIZEX = 480
 SIZEY = 320
 
 --Bigger
-SIZEX = 480*2
-SIZEY = 320*2
+--SIZEX = SIZEX*2
+--SIZEY = SIZEY*2
 
 
 function love.conf(t)

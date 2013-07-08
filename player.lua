@@ -8,6 +8,9 @@ function player:init()
 	self.dx, self.dy = 0, 0
 	self.r = 64
 	
+	self.score = 0
+	self.health = 64
+	
 	self.activePowerUp = "None"
 end
 
@@ -17,6 +20,8 @@ function player:update(dt)
 	self.y = self.y + self.dy*dt
 	self.dx = self.dx * 0.8^dt
 	self.dy = self.dy * 0.8^dt
+	
+	self.r = self.health
 end
 
 function player:draw()
