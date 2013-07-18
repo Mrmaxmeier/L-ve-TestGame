@@ -21,7 +21,7 @@ function player:update(dt)
 	self.dx = self.dx * 0.8^dt
 	self.dy = self.dy * 0.8^dt
 	
-	self.r = self.health
+	--self.r = self.health
 end
 
 function player:draw()
